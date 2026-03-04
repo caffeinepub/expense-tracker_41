@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   FONTS — self-hosted woff2 only
+   ============================================================ */
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/assets/fonts/CabinetGrotesk-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque-Variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   DESIGN TOKENS — OKLCH (raw L C H, no oklch() wrapper)
+   BLACK THEME: true black base, electric cyan accent
+   ============================================================ */
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* --- Base surfaces (forced dark / true black) --- */
+    --background:       0.06 0 0;
+    --foreground:       0.96 0 0;
+
+    --card:             0.10 0 0;
+    --card-foreground:  0.96 0 0;
+
+    --popover:          0.13 0.005 240;
+    --popover-foreground: 0.96 0 0;
+
+    /* --- Primary: electric cyan --- */
+    --primary:          0.78 0.18 200;
+    --primary-foreground: 0.06 0 0;
+
+    /* --- Secondary: dark steel --- */
+    --secondary:        0.16 0.005 240;
+    --secondary-foreground: 0.85 0 0;
+
+    /* --- Muted --- */
+    --muted:            0.14 0.004 240;
+    --muted-foreground: 0.52 0 0;
+
+    /* --- Accent: glowing cyan tint --- */
+    --accent:           0.18 0.02 200;
+    --accent-foreground: 0.88 0.12 200;
+
+    /* --- Semantic --- */
+    --destructive:      0.58 0.22 25;
+    --destructive-foreground: 0.97 0 0;
+
+    --success:          0.68 0.18 145;
+    --success-foreground: 0.06 0 0;
+
+    --warning:          0.82 0.18 80;
+    --warning-foreground: 0.06 0 0;
+
+    /* --- Borders / inputs / rings --- */
+    --border:           0.22 0.005 240;
+    --input:            0.18 0.005 240;
+    --ring:             0.78 0.18 200;
+
+    /* --- Charts: accessible, distinct hues --- */
+    --chart-1:  0.78 0.18 200;   /* cyan */
+    --chart-2:  0.72 0.20 145;   /* emerald */
+    --chart-3:  0.68 0.22 310;   /* violet */
+    --chart-4:  0.82 0.20 80;    /* amber */
+    --chart-5:  0.65 0.24 25;    /* coral */
+    --chart-6:  0.72 0.22 260;   /* indigo */
+    --chart-7:  0.75 0.18 160;   /* teal */
+    --chart-8:  0.80 0.20 55;    /* yellow */
+
+    /* --- Sidebar --- */
+    --sidebar:                0.08 0 0;
+    --sidebar-foreground:     0.92 0 0;
+    --sidebar-primary:        0.78 0.18 200;
+    --sidebar-primary-foreground: 0.06 0 0;
+    --sidebar-accent:         0.16 0.008 200;
+    --sidebar-accent-foreground: 0.88 0.10 200;
+    --sidebar-border:         0.20 0.005 240;
+    --sidebar-ring:           0.78 0.18 200;
+  }
+
+  /* Force dark mode always */
+  html {
+    color-scheme: dark;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv01", "cv02", "cv03", "cv04";
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(var(--border));
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(var(--muted-foreground) / 0.4);
+  }
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Glow effects */
+  .glow-cyan {
+    box-shadow:
+      0 0 20px oklch(0.78 0.18 200 / 0.25),
+      0 0 60px oklch(0.78 0.18 200 / 0.10);
+  }
+  .glow-cyan-sm {
+    box-shadow: 0 0 12px oklch(0.78 0.18 200 / 0.20);
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: oklch(var(--card) / 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(var(--border));
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, oklch(0.88 0.16 200), oklch(0.72 0.20 145));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Noise texture overlay */
+  .noise-overlay {
+    position: relative;
+  }
+  .noise-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.04;
+  }
+}
